@@ -21,7 +21,7 @@ CLASS zcl_prueba_clase_c26 IMPLEMENTATION.
           lv_texto TYPE string.
 
     " Constante
-    CONSTANTS: lv_c1 TYPE c LENGTH 7 VALUE 'padiazv'.
+    CONSTANTS: lv_c1 TYPE c LENGTH 7 VALUE 'padiazv..'.
 
     lv_fecha = '20260101'.
     lv_texto = 'PabloA.'.
