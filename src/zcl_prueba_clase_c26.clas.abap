@@ -14,7 +14,7 @@ ENDCLASS.
 CLASS zcl_prueba_clase_c26 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
-    out->write( 'Esta es mi primera clase en ABAP' ).
+    out->write( 'Esta es mi primera clase en ABAP.' ).
 
     " Variables
     DATA: lv_fecha TYPE d,
@@ -24,7 +24,7 @@ CLASS zcl_prueba_clase_c26 IMPLEMENTATION.
     CONSTANTS: lv_c1 TYPE c LENGTH 7 VALUE 'padiazv'.
 
     lv_fecha = '20260101'.
-    lv_texto = 'PabloA'.
+    lv_texto = 'PabloA.'.
 
     out->write( lv_fecha ).
     out->write( |Hola { lv_fecha } | ).
