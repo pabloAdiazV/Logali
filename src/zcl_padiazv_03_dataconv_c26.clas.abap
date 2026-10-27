@@ -22,6 +22,7 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
     DATA: text   TYPE string VALUE `12345`,
           number TYPE i,
           date   TYPE d,
+          user_a TYPE usalias,
           amount TYPE p LENGTH 3 DECIMALS 2.   " máximo 999.99
 
     " ══ 1. CONVERSIÓN IMPLÍCITA string → i ════════════════════════
@@ -41,12 +42,13 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
     " ══ 3. DUMP 1: una letra en un texto que va a entero ══════════
     "CX_SY_CONVERSION_NO_NUMBER.
 
-*   text   = `12A45`.
-*   number = text.
-*   out->write( number ).
+*    text   = `12A45`.
+*    number = text.
+*    out->write( 'asdasdasd' ).
+*    out->write( number ).
 
 *    " La forma profesional: capturar la excepción en vez de dejar caer el programa.
-    text = `12A45`.
+    text = '12A45'.
     TRY.
         number = text.
         out->write( number ).
@@ -74,7 +76,6 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
     "date = sy-datum. "obsoleta
     date = cl_abap_context_info=>get_system_date( ).
     out->write( |Hoy (USER): { date DATE = USER }| ).
-
 
     "TRUNCAMIENTO Y REDONDEO
 
@@ -150,6 +151,9 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
 *    " ══ 4. SUMAR DÍAS a la fecha del sistema ═══════════════════════
 *    DATA(in_ten_days) = cl_abap_context_info=>get_system_date( ) + 10.
 *    out->write( |Hoy + 10 días: { in_ten_days DATE = USER }| ).
+
+    DATA(fecha_actual) = cl_abap_context_info=>get_system_date( ).
+    out->write( | { fecha_actual DATE = USER } | ).
 
 
 
