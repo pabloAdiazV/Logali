@@ -151,13 +151,13 @@ CLASS zcl_padiazv_08_string_func_c26 IMPLEMENTATION.
     CONCATENATE welcome student INTO DATA(with_statement) SEPARATED BY space.
     out->write( | Concatenation 2: { with_statement } | ).
 
-    " Las filas de una tabla interna, unidas en un solo string
-    SELECT DISTINCT carrier_id
-      FROM /dmo/flight
-      ORDER BY carrier_id
-      INTO TABLE @DATA(carriers).
-
-    out->write( | { concat_lines_of( table = carriers sep = ` ` ) } | ).
+*    " Las filas de una tabla interna, unidas en un solo string
+*    SELECT DISTINCT carrier_id
+*      FROM /dmo/fligght
+*      ORDER BY carrier_id
+*      INTO TABLE @DATA(carriers).
+*
+*    out->write( | { concat_lines_of( table = carriers sep = ` ` ) } | ).
 
 
  out->write( '------------------------' ).
