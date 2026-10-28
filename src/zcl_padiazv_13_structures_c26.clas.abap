@@ -99,12 +99,15 @@ CLASS zcl_padiazv_13_structures_c26 IMPLEMENTATION.
       WHERE carrier_id = 'LH'
       INTO @DATA(flight).
 
+    out->write( '6.4 Clear' ).
     out->write( flight ).
 
     CLEAR flight-price.                               " solo el precio vuelve a 0
+    out->write( '6.4.1 Clear' ).
     out->write( data = flight name = 'flight' ).
 
-    CLEAR flight.                                     " todos los campos a su valor inicial
+    CLEAR flight.
+    out->write( '6.4.2 Clear' ).                                " todos los campos a su valor inicial
     out->write( data = flight name = 'flight' ).
 
 
