@@ -56,10 +56,14 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
         out->write( |'{ text }' no es un número: no se puede convertir a entero| ).
     ENDTRY.
 
+*    text = '12A45'.
+*    number = text.
+*    out->write( number ).
+
 
 
     " ══ 5. DUMP 2: número más largo que el tipo destino ═══════════
-
+*
 *   text   = `1234678`.
 *   amount = text.                            " CX_SY_CONVERSION_OVERFLOW
 *   out->write( amount ).
@@ -154,7 +158,6 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
 
     DATA(fecha_actual) = cl_abap_context_info=>get_system_date( ).
     out->write( | { fecha_actual DATE = USER } | ).
-
 
 
   ENDMETHOD.
