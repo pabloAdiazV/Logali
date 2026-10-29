@@ -33,7 +33,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-*       out->write( '═══════════════════════════════════════════════' ).
+*    out->write( '═══════════════════════════════════════════════' ).
 *    out->write( '   SISTEMA DE GESTIÓN DE EMPLEADOS' ).
 *    out->write( '═══════════════════════════════════════════════' ).
 *    out->write( | | ).
@@ -79,7 +79,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    out->write( | |  ).
 *
 *
-***********************************************************************
+************************************************************************
 *
 *
 *   out->write( '--- ESCENARIO 2: Llega el nuevo director ---' ).
@@ -118,7 +118,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    out->write( | |  ).
 *    out->write( | |  ).
 *
-*********************************************************************************************
+**********************************************************************************************
 *
 *    out->write( '--- ESCENARIO 3: Solicitudes durante el día ---' ).
 *    out->write( 'Cada solicitud se agrega al final de la cola' ).
@@ -164,11 +164,11 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    out->write( '  porque expresa que añadimos al final de esta STANDARD' ).
 *    out->write( | | ).
 *    out->write( | | ).
-*
-*
+
+
 **********************************************************************************************
-*
-*
+
+
 *    " El tipo destino conserva solo los tres campos necesarios del vuelo.
 *    TYPES: BEGIN OF flight,
 *            carrier_id    TYPE /dmo/carrier_id,
@@ -255,69 +255,81 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    out->write( |Resultado con campos mapeados:| ).
 *    out->write( renamed_flights ).
 *    out->write( | | ).
+
+*_________________________________________________________________________________________________
 *
-**_________________________________________________________________________________________________
-*
-*
-*  out->write( |=======================================================| ).
-*    out->write( |  CASO : Agregar datos conservando los existentes    | ).
-*    out->write( |=======================================================| ).
-*    out->write( | | ).
-*
-*    SELECT FROM /dmo/flight
-*     FIELDS *
-*     WHERE currency_code EQ 'EUR'
-*      ORDER BY PRIMARY KEY
-*     INTO TABLE @flights
-*     UP TO 3 ROWS.
-*
-*    selected_flights = CORRESPONDING #( flights ).
-*
-*    out->write( |Comenzamos con { lines( selected_flights ) } vuelos en EUR| ).
-*    out->write( selected_flights ).
-*    out->write( | | ).
-*
-*    SELECT FROM /dmo/flight
-*     FIELDS *
-*     WHERE currency_code EQ 'USD'
-*      ORDER BY PRIMARY KEY
-*     INTO TABLE @flights
-*     UP TO 3 ROWS.
-*
-*    out->write( |Queremos agregar { lines( flights ) } vuelos en USD| ).
-*    out->write( | | ).
-*
-*    " KEEPING TARGET LINES conserva el destino y añade las filas copiadas.
-*    MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.
-*    out->write( |FORMA ANTIGUA: MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.| ).
-*
-*    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
-*    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
-*    out->write( selected_flights ).
-*    out->write( | | ).
-*
-*    CLEAR selected_flights.
-*
-*    SELECT FROM /dmo/flight
-*     FIELDS *
-*     WHERE currency_code EQ 'EUR'
-*      ORDER BY PRIMARY KEY
-*     INTO TABLE @DATA(eur_flights)
-*     UP TO 3 ROWS.
-*
-*    selected_flights = CORRESPONDING #( eur_flights ).
-*
-*    " BASE conserva las filas del destino durante la construcción del resultado.
-*
-*    selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).
-*
-*    out->write( |FORMA MODERNA: selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).| ).
-*
-*    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
-*    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
-*    out->write( selected_flights ).
-*    out->write( |==> Ambas formas producen el MISMO resultado| ).
-*    out->write( |\n\n| ).
+
+    " El tipo destino conserva solo los tres campos necesarios del vuelo.
+    TYPES: BEGIN OF flight,
+            carrier_id    TYPE /dmo/carrier_id,
+            connection_id TYPE /dmo/connection_id,
+            flight_date   TYPE /dmo/flight_date,
+          END OF flight.
+
+     " El tipo destino conserva solo los tres campos necesarios del vuelo.
+
+*    " EMPTY KEY evita una clave por defecto implícita en la lista de resultados.
+    DATA selected_flights TYPE STANDARD TABLE OF flight WITH EMPTY KEY.
+
+  out->write( |=======================================================| ).
+    out->write( |  CASO : Agregar datos conservando los existentes    | ).
+    out->write( |=======================================================| ).
+    out->write( | | ).
+
+    SELECT FROM /dmo/flight
+     FIELDS *
+     WHERE currency_code EQ 'EUR'
+      ORDER BY PRIMARY KEY
+     INTO TABLE @DATA(flights)
+     UP TO 3 ROWS.
+
+    selected_flights = CORRESPONDING #( flights ).
+
+    out->write( |Comenzamos con { lines( selected_flights ) } vuelos en EUR| ).
+    out->write( selected_flights ).
+    out->write( | | ).
+
+    SELECT FROM /dmo/flight
+     FIELDS *
+     WHERE currency_code EQ 'USD'
+      ORDER BY PRIMARY KEY
+     INTO TABLE @flights
+     UP TO 3 ROWS.
+
+    out->write( |Queremos agregar { lines( flights ) } vuelos en USD| ).
+    out->write( | | ).
+
+    " KEEPING TARGET LINES conserva el destino y añade las filas copiadas.
+    MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.
+    out->write( |FORMA ANTIGUA: MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.| ).
+
+    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
+    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
+    out->write( selected_flights ).
+    out->write( | | ).
+
+    CLEAR selected_flights.
+
+    SELECT FROM /dmo/flight
+     FIELDS *
+     WHERE currency_code EQ 'EUR'
+      ORDER BY PRIMARY KEY
+     INTO TABLE @DATA(eur_flights)
+     UP TO 3 ROWS.
+
+    selected_flights = CORRESPONDING #( eur_flights ).
+
+    " BASE conserva las filas del destino durante la construcción del resultado.
+
+    selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).
+
+    out->write( |FORMA MODERNA: selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).| ).
+
+    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
+    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
+    out->write( selected_flights ).
+    out->write( |==> Ambas formas producen el MISMO resultado| ).
+    out->write( |\n\n| ).
 
 
 *"READ TABLE*****************************************************************
@@ -802,71 +814,71 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 "CORRESPONDING
 
-    TYPES: BEGIN OF empleado_completo,
-             id TYPE i,
-             nombre TYPE string,
-             salario TYPE p LENGTH 10 DECIMALS 2,
-             departamento TYPE string,
-             telefono TYPE string,
-           END OF empleado_completo,
-           BEGIN OF empleado_publico,
-             id TYPE i,
-             nombre TYPE string,
-             departamento TYPE string,
-           END OF empleado_publico,
-           BEGIN OF empleado_con_telefono,
-             id TYPE i,
-             nombre TYPE string,
-             departamento TYPE string,
-             telefono TYPE string,
-           END OF empleado_con_telefono.
-
-    DATA empleados_completos TYPE STANDARD TABLE OF empleado_completo WITH EMPTY KEY.
-    DATA empleados_publicos TYPE STANDARD TABLE OF empleado_publico WITH EMPTY KEY.
-    DATA empleados_destino TYPE STANDARD TABLE OF empleado_con_telefono WITH EMPTY KEY.
-
-    empleados_completos = VALUE #(
-      ( id = 1 nombre = 'Ana García' salario = 45000 departamento = 'IT' telefono = '600111222' )
-      ( id = 2 nombre = 'Carlos López' salario = 38000 departamento = 'Ventas' telefono = '600333444' )
-      ( id = 3 nombre = 'María Ruiz' salario = 52000 departamento = 'IT' telefono = '600555666' ) ).
-
-    out->write( 'EMPLEADOS COMPLETOS' ).
-    out->write( empleados_completos ).
-
-    "Solo se asignan componentes con nombres coincidentes en el destino.
-    empleados_publicos = CORRESPONDING #( empleados_completos ).
-    out->write( 'DESTINO SIN SALARIO NI TELÉFONO' ).
-    out->write( empleados_publicos ).
-
-    "EXCEPT omite telefono; en este resultado nuevo queda inicial.
-    empleados_destino = CORRESPONDING #( empleados_completos EXCEPT telefono ).
-    out->write( 'DESTINO CON TELÉFONO INICIAL' ).
-    out->write( empleados_destino ).
-
-
-
-    TYPES: BEGIN OF venta,
-             producto TYPE string,
-             cantidad TYPE i,
-           END OF venta.
-
-    DATA ventas_dia TYPE STANDARD TABLE OF venta WITH EMPTY KEY.
-    DATA ventas_unicas TYPE SORTED TABLE OF venta WITH UNIQUE KEY producto.
-
-    ventas_dia = VALUE #(
-      ( producto = 'Laptop' cantidad = 2 )
-      ( producto = 'Mouse' cantidad = 5 )
-      ( producto = 'Laptop' cantidad = 1 )
-      ( producto = 'Teclado' cantidad = 3 )
-      ( producto = 'Mouse' cantidad = 2 ) ).
-    out->write( |Filas de origen: { lines( ventas_dia ) }| ).
-    out->write( ventas_dia ).
-
-    "Se conserva la primera fila encontrada por clave; no se suman cantidades.
-    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES ).
-    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
-    out->write( ventas_unicas ).
-    out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
+*    TYPES: BEGIN OF empleado_completo,
+*             id TYPE i,
+*             nombre TYPE string,
+*             salario TYPE p LENGTH 10 DECIMALS 2,
+*             departamento TYPE string,
+*             telefono TYPE string,
+*           END OF empleado_completo,
+*           BEGIN OF empleado_publico,
+*             id TYPE i,
+*             nombre TYPE string,
+*             departamento TYPE string,
+*           END OF empleado_publico,
+*           BEGIN OF empleado_con_telefono,
+*             id TYPE i,
+*             nombre TYPE string,
+*             departamento TYPE string,
+*             telefono TYPE string,
+*           END OF empleado_con_telefono.
+*
+*    DATA empleados_completos TYPE STANDARD TABLE OF empleado_completo WITH EMPTY KEY.
+*    DATA empleados_publicos TYPE STANDARD TABLE OF empleado_publico WITH EMPTY KEY.
+*    DATA empleados_destino TYPE STANDARD TABLE OF empleado_con_telefono WITH EMPTY KEY.
+*
+*    empleados_completos = VALUE #(
+*      ( id = 1 nombre = 'Ana García' salario = 45000 departamento = 'IT' telefono = '600111222' )
+*      ( id = 2 nombre = 'Carlos López' salario = 38000 departamento = 'Ventas' telefono = '600333444' )
+*      ( id = 3 nombre = 'María Ruiz' salario = 52000 departamento = 'IT' telefono = '600555666' ) ).
+*
+*    out->write( 'EMPLEADOS COMPLETOS' ).
+*    out->write( empleados_completos ).
+*
+*    "Solo se asignan componentes con nombres coincidentes en el destino.
+*    empleados_publicos = CORRESPONDING #( empleados_completos ).
+*    out->write( 'DESTINO SIN SALARIO NI TELÉFONO' ).
+*    out->write( empleados_publicos ).
+*
+*    "EXCEPT omite telefono; en este resultado nuevo queda inicial.
+*    empleados_destino = CORRESPONDING #( empleados_completos EXCEPT telefono ).
+*    out->write( 'DESTINO CON TELÉFONO INICIAL' ).
+*    out->write( empleados_destino ).
+*
+*
+*
+*    TYPES: BEGIN OF venta,
+*             producto TYPE string,
+*             cantidad TYPE i,
+*           END OF venta.
+*
+*    DATA ventas_dia TYPE STANDARD TABLE OF venta WITH EMPTY KEY.
+*    DATA ventas_unicas TYPE SORTED TABLE OF venta WITH UNIQUE KEY producto.
+*
+*    ventas_dia = VALUE #(
+*      ( producto = 'Laptop' cantidad = 2 )
+*      ( producto = 'Mouse' cantidad = 5 )
+*      ( producto = 'Laptop' cantidad = 1 )
+*      ( producto = 'Teclado' cantidad = 3 )
+*      ( producto = 'Mouse' cantidad = 2 ) ).
+*    out->write( |Filas de origen: { lines( ventas_dia ) }| ).
+*    out->write( ventas_dia ).
+*
+*    "Se conserva la primera fila encontrada por clave; no se suman cantidades.
+*    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES ).
+*    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
+*    out->write( ventas_unicas ).
+*    out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
 
 
 
