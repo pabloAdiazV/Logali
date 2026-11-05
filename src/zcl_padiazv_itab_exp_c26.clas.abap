@@ -259,82 +259,82 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *_________________________________________________________________________________________________
 *
 
-    " El tipo destino conserva solo los tres campos necesarios del vuelo.
-    TYPES: BEGIN OF flight,
-            carrier_id    TYPE /dmo/carrier_id,
-            connection_id TYPE /dmo/connection_id,
-            flight_date   TYPE /dmo/flight_date,
-          END OF flight.
-
-     " El tipo destino conserva solo los tres campos necesarios del vuelo.
-
-*    " EMPTY KEY evita una clave por defecto implícita en la lista de resultados.
-    DATA selected_flights TYPE STANDARD TABLE OF flight WITH EMPTY KEY.
-
-  out->write( |=======================================================| ).
-    out->write( |  CASO : Agregar datos conservando los existentes    | ).
-    out->write( |=======================================================| ).
-    out->write( | | ).
-
-    SELECT FROM /dmo/flight
-     FIELDS *
-     WHERE currency_code EQ 'EUR'
-      ORDER BY PRIMARY KEY
-     INTO TABLE @DATA(flights)
-     UP TO 3 ROWS.
-
-    selected_flights = CORRESPONDING #( flights ).
-
-    out->write( |Comenzamos con { lines( selected_flights ) } vuelos en EUR| ).
-    out->write( selected_flights ).
-    out->write( | | ).
-
-    SELECT FROM /dmo/flight
-     FIELDS *
-     WHERE currency_code EQ 'USD'
-      ORDER BY PRIMARY KEY
-     INTO TABLE @flights
-     UP TO 3 ROWS.
-
-    out->write( |Queremos agregar { lines( flights ) } vuelos en USD| ).
-    out->write( | | ).
-
-    " KEEPING TARGET LINES conserva el destino y añade las filas copiadas.
-    MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.
-    out->write( |FORMA ANTIGUA: MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.| ).
-
-    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
-    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
-    out->write( selected_flights ).
-    out->write( | | ).
-
-    CLEAR selected_flights.
-
-    SELECT FROM /dmo/flight
-     FIELDS *
-     WHERE currency_code EQ 'EUR'
-      ORDER BY PRIMARY KEY
-     INTO TABLE @DATA(eur_flights)
-     UP TO 3 ROWS.
-
-    selected_flights = CORRESPONDING #( eur_flights ).
-
-    " BASE conserva las filas del destino durante la construcción del resultado.
-
-    selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).
-
-    out->write( |FORMA MODERNA: selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).| ).
-
-    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
-    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
-    out->write( selected_flights ).
-    out->write( |==> Ambas formas producen el MISMO resultado| ).
-    out->write( |\n\n| ).
+*    " El tipo destino conserva solo los tres campos necesarios del vuelo.
+*    TYPES: BEGIN OF flight,
+*            carrier_id    TYPE /dmo/carrier_id,
+*            connection_id TYPE /dmo/connection_id,
+*            flight_date   TYPE /dmo/flight_date,
+*          END OF flight.
+*
+*     " El tipo destino conserva solo los tres campos necesarios del vuelo.
+*
+**    " EMPTY KEY evita una clave por defecto implícita en la lista de resultados.
+*    DATA selected_flights TYPE STANDARD TABLE OF flight WITH EMPTY KEY.
+*
+*  out->write( |=======================================================| ).
+*    out->write( |  CASO : Agregar datos conservando los existentes    | ).
+*    out->write( |=======================================================| ).
+*    out->write( | | ).
+*
+*    SELECT FROM /dmo/flight
+*     FIELDS *
+*     WHERE currency_code EQ 'EUR'
+*      ORDER BY PRIMARY KEY
+*     INTO TABLE @DATA(flights)
+*     UP TO 3 ROWS.
+*
+*    selected_flights = CORRESPONDING #( flights ).
+*
+*    out->write( |Comenzamos con { lines( selected_flights ) } vuelos en EUR| ).
+*    out->write( selected_flights ).
+*    out->write( | | ).
+*
+*    SELECT FROM /dmo/flight
+*     FIELDS *
+*     WHERE currency_code EQ 'USD'
+*      ORDER BY PRIMARY KEY
+*     INTO TABLE @flights
+*     UP TO 3 ROWS.
+*
+*    out->write( |Queremos agregar { lines( flights ) } vuelos en USD| ).
+*    out->write( | | ).
+*
+*    " KEEPING TARGET LINES conserva el destino y añade las filas copiadas.
+*    MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.
+*    out->write( |FORMA ANTIGUA: MOVE-CORRESPONDING flights TO selected_flights KEEPING TARGET LINES.| ).
+*
+*    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
+*    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
+*    out->write( selected_flights ).
+*    out->write( | | ).
+*
+*    CLEAR selected_flights.
+*
+*    SELECT FROM /dmo/flight
+*     FIELDS *
+*     WHERE currency_code EQ 'EUR'
+*      ORDER BY PRIMARY KEY
+*     INTO TABLE @DATA(eur_flights)
+*     UP TO 3 ROWS.
+*
+*    selected_flights = CORRESPONDING #( eur_flights ).
+*
+*    " BASE conserva las filas del destino durante la construcción del resultado.
+*
+*    selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).
+*
+*    out->write( |FORMA MODERNA: selected_flights = CORRESPONDING #( BASE ( selected_flights ) flights ).| ).
+*
+*    out->write( |Resultado: Ahora tenemos { lines( selected_flights ) } vuelos totales| ).
+*    out->write( |Se conservaron los EUR y se agregaron los USD disponibles| ).
+*    out->write( selected_flights ).
+*    out->write( |==> Ambas formas producen el MISMO resultado| ).
+*    out->write( |\n\n| ).
 
 
 *"READ TABLE*****************************************************************
 *
-*    " La tabla interna contiene los aeropuertos de Alemania devueltos por la consulta.
+    " La tabla interna contiene los aeropuertos de Alemania devueltos por la consulta.
 *    SELECT FROM /dmo/airport
 *     FIELDS *
 *     WHERE country EQ 'DE'
@@ -360,7 +360,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *      TRY.
 *          second_airport = airports[ 2 ].
 *        CATCH cx_sy_itab_line_not_found.
-*          out->write( |No existe la fila solicitada en esta muestra.| ).
+*          out->write( |No existe la fila solicitada en esta muestraa.| ).
 *      ENDTRY.
 *
 *      out->write( |Forma moderna: airports[ 2 ]| ).
@@ -469,73 +469,73 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 
 ***************************************** FOR **********************************************************
-*
-*
-*    " El precio usa un tipo decimal; la categoría determina el filtro posterior.
-*    TYPES: BEGIN OF producto,
-*            id       TYPE i,
-*            nombre   TYPE string,
-*            precio   TYPE p LENGTH 10 DECIMALS 2,
-*            categoria TYPE string,
-*          END OF producto.
-*
-*    TYPES: BEGIN OF producto_con_descuento,
-*            id              TYPE i,
-*            nombre          TYPE string,
-*            precio_original TYPE p LENGTH 10 DECIMALS 2,
-*            descuento       TYPE i,
-*            precio_final    TYPE p LENGTH 10 DECIMALS 2,
-*          END OF producto_con_descuento.
-*
-*    DATA productos TYPE TABLE OF producto WITH EMPTY KEY.
-*
-*    DATA productos_con_descuento TYPE TABLE OF producto_con_descuento WITH EMPTY KEY.
-*
-*    out->write( |CASO 1: Generar productos automáticamente| ).
-*    out->write( |======================================| ).
-*
-*    " FOR UNTIL genera diez filas con identificador, precio y categoría.
-*    productos = VALUE #(
-*     FOR i = 1 UNTIL i > 10
-*         ( id        = i
-*           nombre    = |Producto { i }|
-*           precio    = 100 + ( i * 20 )
-*           categoria = COND #( WHEN i <= 5 THEN 'Basico' ELSE 'Premium' ) )
-*       ).
-*
-*    out->write( |Generados { lines( productos ) } productos| ).
-*    out->write( productos ).
-*    out->write( |\n| ).
-*
-*
-*    out->write( |CASO 2: Aplicar descuentos según precio| ).
-*    out->write( |==================================| ).
-*
-*    " FOR IN construye una fila de salida por cada producto del origen.
-*
-*    productos_con_descuento = VALUE #(
-*                                       FOR producto IN productos
-*                                       " COND evalúa los tramos en orden; LET conserva el porcentaje en la expresión.
-*                                       LET descuento_aplicado = COND i( WHEN producto-precio >= 200 THEN 20
-*                                                                        WHEN producto-precio >= 150 THEN 15
-*                                                                         ELSE 10 )
-*                                       IN
-*
-*                                       ( id              = producto-id
-*                                         nombre          = producto-nombre
-*                                         precio_original = producto-precio
-*                                         descuento       = descuento_aplicado
-*                                         precio_final    = producto-precio * ( 100 - descuento_aplicado ) / 100 )
-*   ).
-*
-*    out->write( |Todos los productos con descuento aplicado:| ).
-*
-*    LOOP AT productos_con_descuento INTO DATA(producto_rebajado).
-*      out->write( |{ producto_rebajado-nombre }: { producto_rebajado-precio_original } EUR -> { producto_rebajado-precio_final } EUR ({ producto_rebajado-descuento }% desc)| ).
-*    ENDLOOP.
-*
-*    out->write( |\n| ).
-*
+
+
+    " El precio usa un tipo decimal; la categoría determina el filtro posterior.
+    TYPES: BEGIN OF producto,
+            id       TYPE i,
+            nombre   TYPE string,
+            precio   TYPE p LENGTH 10 DECIMALS 2,
+            categoria TYPE string,
+          END OF producto.
+
+    TYPES: BEGIN OF producto_con_descuento,
+            id              TYPE i,
+            nombre          TYPE string,
+            precio_original TYPE p LENGTH 10 DECIMALS 2,
+            descuento       TYPE i,
+            precio_final    TYPE p LENGTH 10 DECIMALS 2,
+          END OF producto_con_descuento.
+
+    DATA productos TYPE TABLE OF producto WITH EMPTY KEY.
+
+    DATA productos_con_descuento TYPE TABLE OF producto_con_descuento WITH EMPTY KEY.
+
+    out->write( |CASO 1: Generar productos automáticamente| ).
+    out->write( |======================================| ).
+
+    " FOR UNTIL genera diez filas con identificador, precio y categoría.
+    productos = VALUE #(
+     FOR i = 1 UNTIL i > 10
+         ( id        = i
+           nombre    = |Producto { i }|
+           precio    = 100 + ( i * 20 )
+           categoria = COND #( WHEN i <= 5 THEN 'Basico' ELSE 'Premium' ) )
+       ).
+
+    out->write( |Generados { lines( productos ) } productos| ).
+    out->write( productos ).
+    out->write( |\n| ).
+
+
+    out->write( |CASO 2: Aplicar descuentos según precio| ).
+    out->write( |==================================| ).
+
+    " FOR IN construye una fila de salida por cada producto del origen.
+
+    productos_con_descuento = VALUE #(
+                                       FOR productooo IN productos
+                                       " COND evalúa los tramos en orden; LET conserva el porcentaje en la expresión.
+                                       LET descuento_aplicado = COND i( WHEN productooo-precio >= 200 THEN 20
+                                                                        WHEN productooo-precio >= 150 THEN 15
+                                                                         ELSE 10 )
+                                       IN
+
+                                       ( id              = productooo-id
+                                         nombre          = productooo-nombre
+                                         precio_original = productooo-precio
+                                         descuento       = descuento_aplicado
+                                         precio_final    = productooo-precio * ( 100 - descuento_aplicado ) / 100 )
+   ).
+
+    out->write( |Todos los productos con descuento aplicado:| ).
+
+    LOOP AT productos_con_descuento INTO DATA(producto_rebajado).
+      out->write( |{ producto_rebajado-nombre }: { producto_rebajado-precio_original } EUR -> { producto_rebajado-precio_final } EUR ({ producto_rebajado-descuento }% desc)| ).
+    ENDLOOP.
+
+    out->write( |\n| ).
+
 *
 *
 *    out->write( |CASO 3: Reporte solo de productos Premium| ).
@@ -879,28 +879,6 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
 *    out->write( ventas_unicas ).
 *    out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   ENDMETHOD.
