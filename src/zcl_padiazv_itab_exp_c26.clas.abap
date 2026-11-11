@@ -875,8 +875,8 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
     out->write( ventas_dia ).
 
     "Se conserva la primera fila encontrada por clave; no se suman cantidades.
-    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES ).
-    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
+    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES  ).
+    out->write( |Productos únicos: { lines( ventas_unicas  ) }| ).
     out->write( ventas_unicas ).
     out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
 
