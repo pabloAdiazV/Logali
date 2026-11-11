@@ -470,74 +470,74 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 ***************************************** FOR **********************************************************
 
-
-    " El precio usa un tipo decimal; la categoría determina el filtro posterior.
-    TYPES: BEGIN OF producto,
-            id       TYPE i,
-            nombre   TYPE string,
-            precio   TYPE p LENGTH 10 DECIMALS 2,
-            categoria TYPE string,
-          END OF producto.
-
-    TYPES: BEGIN OF producto_con_descuento,
-            id              TYPE i,
-            nombre          TYPE string,
-            precio_original TYPE p LENGTH 10 DECIMALS 2,
-            descuento       TYPE i,
-            precio_final    TYPE p LENGTH 10 DECIMALS 2,
-          END OF producto_con_descuento.
-
-    DATA productos TYPE TABLE OF producto WITH EMPTY KEY.
-
-    DATA productos_con_descuento TYPE TABLE OF producto_con_descuento WITH EMPTY KEY.
-
-    out->write( |CASO 1: Generar productos automáticamente| ).
-    out->write( |======================================| ).
-
-    " FOR UNTIL genera diez filas con identificador, precio y categoría.
-    productos = VALUE #(
-     FOR i = 1 UNTIL i > 10
-         ( id        = i
-           nombre    = |Producto { i }|
-           precio    = 100 + ( i * 20 )
-           categoria = COND #( WHEN i <= 5 THEN 'Basico' ELSE 'Premium' ) )
-       ).
-
-    out->write( |Generados { lines( productos ) } productos| ).
-    out->write( productos ).
-    out->write( |\n| ).
-
-
-    out->write( |CASO 2: Aplicar descuentos según precio| ).
-    out->write( |==================================| ).
-
-    " FOR IN construye una fila de salida por cada producto del origen.
-
-    productos_con_descuento = VALUE #(
-                                       FOR productooo IN productos
-                                       " COND evalúa los tramos en orden; LET conserva el porcentaje en la expresión.
-                                       LET descuento_aplicado = COND i( WHEN productooo-precio >= 200 THEN 20
-                                                                        WHEN productooo-precio >= 150 THEN 15
-                                                                         ELSE 10 )
-                                       IN
-
-                                       ( id              = productooo-id
-                                         nombre          = productooo-nombre
-                                         precio_original = productooo-precio
-                                         descuento       = descuento_aplicado
-                                         precio_final    = productooo-precio * ( 100 - descuento_aplicado ) / 100 )
-   ).
-
-    out->write( |Todos los productos con descuento aplicado:| ).
-
-    LOOP AT productos_con_descuento INTO DATA(producto_rebajado).
-      out->write( |{ producto_rebajado-nombre }: { producto_rebajado-precio_original } EUR -> { producto_rebajado-precio_final } EUR ({ producto_rebajado-descuento }% desc)| ).
-    ENDLOOP.
-
-    out->write( |\n| ).
-
+*
+*    " El precio usa un tipo decimal; la categoría determina el filtro posterior.
+*    TYPES: BEGIN OF producto,
+*            id       TYPE i,
+*            nombre   TYPE string,
+*            precio   TYPE p LENGTH 10 DECIMALS 2,
+*            categoria TYPE string,
+*          END OF producto.
+*
+*    TYPES: BEGIN OF producto_con_descuento,
+*            id              TYPE i,
+*            nombre          TYPE string,
+*            precio_original TYPE p LENGTH 10 DECIMALS 2,
+*            descuento       TYPE i,
+*            precio_final    TYPE p LENGTH 10 DECIMALS 2,
+*          END OF producto_con_descuento.
+*
+*    DATA productos TYPE TABLE OF producto WITH EMPTY KEY.
+*
+*    DATA productos_con_descuento TYPE TABLE OF producto_con_descuento WITH EMPTY KEY.
+*
+*    out->write( |CASO 1: Generar productos automáticamente| ).
+*    out->write( |======================================| ).
+*
+*    " FOR UNTIL genera diez filas con identificador, precio y categoría.
+*    productos = VALUE #(
+*     FOR i = 1 UNTIL i > 10
+*         ( id        = i
+*           nombre    = |Producto { i }|
+*           precio    = 100 + ( i * 20 )
+*           categoria = COND #( WHEN i <= 5 THEN 'Basico' ELSE 'Premium' ) )
+*       ).
+*
+*    out->write( |Generados { lines( productos ) } productos| ).
+*    out->write( productos ).
+*    out->write( |\n| ).
 *
 *
+*    out->write( |CASO 2: Aplicar descuentos según precio| ).
+*    out->write( |==================================| ).
+*
+*    " FOR IN construye una fila de salida por cada producto del origen.
+*
+*    productos_con_descuento = VALUE #(
+*                                       FOR productooo IN productos
+*                                       " COND evalúa los tramos en orden; LET conserva el porcentaje en la expresión.
+*                                       LET descuento_aplicado = COND i( WHEN productooo-precio >= 200 THEN 20
+*                                                                        WHEN productooo-precio >= 150 THEN 15
+*                                                                         ELSE 10 )
+*                                       IN
+*
+*                                       ( id              = productooo-id
+*                                         nombre          = productooo-nombre
+*                                         precio_original = productooo-precio
+*                                         descuento       = descuento_aplicado
+*                                         precio_final    = productooo-precio * ( 100 - descuento_aplicado ) / 100 )
+*   ).
+*
+*    out->write( |Todos los productos con descuento aplicado:| ).
+*
+*    LOOP AT productos_con_descuento INTO DATA(producto_rebajado).
+*      out->write( |{ producto_rebajado-nombre }: { producto_rebajado-precio_original } EUR -> { producto_rebajado-precio_final } EUR ({ producto_rebajado-descuento }% desc)| ).
+*    ENDLOOP.
+*
+*    out->write( |\n| ).
+
+
+
 *    out->write( |CASO 3: Reporte solo de productos Premium| ).
 *    out->write( |====================================| ).
 *
@@ -607,7 +607,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *      out->write( |{ vuelo-AirlineID }{ vuelo-ConnectionID } - { vuelo-FlightDate } - { vuelo-Price } { vuelo-CurrencyCode }| ).
 *    ENDLOOP.
 *    out->write( |\n| ).
-*
+**
 *    out->write( |CASO 4: Ordenar por precio (más caro primero)| ).
 *    out->write( |=========================================| ).
 *
@@ -725,7 +725,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 "COLLECT
 
-*
+
 *    TYPES: BEGIN OF venta,
 *            producto  TYPE string,
 *            cantidad  TYPE i,
@@ -779,7 +779,7 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 *    ENDLOOP.
 
 
-*
+
 *    SELECT FROM /DMO/I_Customer
 *     FIELDS CustomerID, FirstName, LastName, CountryCode, City
 *     INTO TABLE @DATA(clientes).
@@ -814,71 +814,71 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 "CORRESPONDING
 
-*    TYPES: BEGIN OF empleado_completo,
-*             id TYPE i,
-*             nombre TYPE string,
-*             salario TYPE p LENGTH 10 DECIMALS 2,
-*             departamento TYPE string,
-*             telefono TYPE string,
-*           END OF empleado_completo,
-*           BEGIN OF empleado_publico,
-*             id TYPE i,
-*             nombre TYPE string,
-*             departamento TYPE string,
-*           END OF empleado_publico,
-*           BEGIN OF empleado_con_telefono,
-*             id TYPE i,
-*             nombre TYPE string,
-*             departamento TYPE string,
-*             telefono TYPE string,
-*           END OF empleado_con_telefono.
-*
-*    DATA empleados_completos TYPE STANDARD TABLE OF empleado_completo WITH EMPTY KEY.
-*    DATA empleados_publicos TYPE STANDARD TABLE OF empleado_publico WITH EMPTY KEY.
-*    DATA empleados_destino TYPE STANDARD TABLE OF empleado_con_telefono WITH EMPTY KEY.
-*
-*    empleados_completos = VALUE #(
-*      ( id = 1 nombre = 'Ana García' salario = 45000 departamento = 'IT' telefono = '600111222' )
-*      ( id = 2 nombre = 'Carlos López' salario = 38000 departamento = 'Ventas' telefono = '600333444' )
-*      ( id = 3 nombre = 'María Ruiz' salario = 52000 departamento = 'IT' telefono = '600555666' ) ).
-*
-*    out->write( 'EMPLEADOS COMPLETOS' ).
-*    out->write( empleados_completos ).
-*
-*    "Solo se asignan componentes con nombres coincidentes en el destino.
-*    empleados_publicos = CORRESPONDING #( empleados_completos ).
-*    out->write( 'DESTINO SIN SALARIO NI TELÉFONO' ).
-*    out->write( empleados_publicos ).
-*
-*    "EXCEPT omite telefono; en este resultado nuevo queda inicial.
-*    empleados_destino = CORRESPONDING #( empleados_completos EXCEPT telefono ).
-*    out->write( 'DESTINO CON TELÉFONO INICIAL' ).
-*    out->write( empleados_destino ).
-*
-*
-*
-*    TYPES: BEGIN OF venta,
-*             producto TYPE string,
-*             cantidad TYPE i,
-*           END OF venta.
-*
-*    DATA ventas_dia TYPE STANDARD TABLE OF venta WITH EMPTY KEY.
-*    DATA ventas_unicas TYPE SORTED TABLE OF venta WITH UNIQUE KEY producto.
-*
-*    ventas_dia = VALUE #(
-*      ( producto = 'Laptop' cantidad = 2 )
-*      ( producto = 'Mouse' cantidad = 5 )
-*      ( producto = 'Laptop' cantidad = 1 )
-*      ( producto = 'Teclado' cantidad = 3 )
-*      ( producto = 'Mouse' cantidad = 2 ) ).
-*    out->write( |Filas de origen: { lines( ventas_dia ) }| ).
-*    out->write( ventas_dia ).
-*
-*    "Se conserva la primera fila encontrada por clave; no se suman cantidades.
-*    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES ).
-*    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
-*    out->write( ventas_unicas ).
-*    out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
+    TYPES: BEGIN OF empleado_completo,
+             id TYPE i,
+             nombre TYPE string,
+             salario TYPE p LENGTH 10 DECIMALS 2,
+             departamento TYPE string,
+             telefono TYPE string,
+           END OF empleado_completo,
+           BEGIN OF empleado_publico,
+             id TYPE i,
+             nombre TYPE string,
+             departamento TYPE string,
+           END OF empleado_publico,
+           BEGIN OF empleado_con_telefono,
+             id TYPE i,
+             nombre TYPE string,
+             departamento TYPE string,
+             telefono TYPE string,
+           END OF empleado_con_telefono.
+
+    DATA empleados_completos TYPE STANDARD TABLE OF empleado_completo WITH EMPTY KEY.
+    DATA empleados_publicos TYPE STANDARD TABLE OF empleado_publico WITH EMPTY KEY.
+    DATA empleados_destino TYPE STANDARD TABLE OF empleado_con_telefono WITH EMPTY KEY.
+
+    empleados_completos = VALUE #(
+      ( id = 1 nombre = 'Ana García' salario = 45000 departamento = 'IT' telefono = '600111222' )
+      ( id = 2 nombre = 'Carlos López' salario = 38000 departamento = 'Ventas' telefono = '600333444' )
+      ( id = 3 nombre = 'María Ruiz' salario = 52000 departamento = 'IT' telefono = '600555666' ) ).
+
+    out->write( 'EMPLEADOS COMPLETOS' ).
+    out->write( empleados_completos ).
+
+    "Solo se asignan componentes con nombres coincidentes en el destino.
+    empleados_publicos = CORRESPONDING #( empleados_completos ).
+    out->write( 'DESTINO SIN SALARIO NI TELÉFONO' ).
+    out->write( empleados_publicos ).
+
+    "EXCEPT omite telefono; en este resultado nuevo queda inicial.
+    empleados_destino = CORRESPONDING #( empleados_completos EXCEPT telefono ).
+    out->write( 'DESTINO CON TELÉFONO INICIAL' ).
+    out->write( empleados_destino ).
+
+
+
+    TYPES: BEGIN OF venta,
+             producto TYPE string,
+             cantidad TYPE i,
+           END OF venta.
+
+    DATA ventas_dia TYPE STANDARD TABLE OF venta WITH EMPTY KEY.
+    DATA ventas_unicas TYPE SORTED TABLE OF venta WITH UNIQUE KEY producto.
+
+    ventas_dia = VALUE #(
+      ( producto = 'Laptop' cantidad = 2 )
+      ( producto = 'Mouse' cantidad = 5 )
+      ( producto = 'Laptop' cantidad = 1 )
+      ( producto = 'Teclado' cantidad = 3 )
+      ( producto = 'Mouse' cantidad = 2 ) ).
+    out->write( |Filas de origen: { lines( ventas_dia ) }| ).
+    out->write( ventas_dia ).
+
+    "Se conserva la primera fila encontrada por clave; no se suman cantidades.
+    ventas_unicas = CORRESPONDING #( ventas_dia DISCARDING DUPLICATES ).
+    out->write( |Productos únicos: { lines( ventas_unicas ) }| ).
+    out->write( ventas_unicas ).
+    out->write( 'Laptop: 2; Mouse: 5; Teclado: 3. No es una acumulación.' ).
 
 
   ENDMETHOD.
