@@ -8,7 +8,11 @@ CLASS zcl_pad_43_debugger_c26 DEFINITION
       RETURNING VALUE(total) TYPE i.
 ENDCLASS.
 
-CLASS zcl_pad_43_debugger_c26 IMPLEMENTATION.
+
+
+CLASS ZCL_PAD_43_DEBUGGER_C26 IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     "=== SECCIÓN 1: F8 (Resume) ===
     out->write( |--- SECCIÓN 1: F8 (Resume) ---| ).           "<-- BP 1
@@ -90,6 +94,7 @@ CLASS zcl_pad_43_debugger_c26 IMPLEMENTATION.
 
     out->write( |=== FIN DEL PROGRAMA ===| ).                   "<-- BP 11
   ENDMETHOD.
+
 
   METHOD sumar_precios.
     "=== SECCIÓN 4: F7 (Step Return) ===

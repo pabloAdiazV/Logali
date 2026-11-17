@@ -6,7 +6,11 @@ CLASS zcl_padiazv_32_ref_c26 DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_padiazv_32_ref_c26 IMPLEMENTATION.
+
+
+CLASS ZCL_PADIAZV_32_REF_C26 IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 *
 *    TYPES: BEGIN OF configuracion,
@@ -151,5 +155,4 @@ CLASS zcl_padiazv_32_ref_c26 IMPLEMENTATION.
     out->write( |Inventario original: { lines( inventario ) } productos| ).
 
   ENDMETHOD.
-
 ENDCLASS.

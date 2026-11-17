@@ -6,7 +6,11 @@ CLASS zcl_padiazv_31_new_c26 DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_padiazv_31_new_c26 IMPLEMENTATION.
+
+
+CLASS ZCL_PADIAZV_31_NEW_C26 IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 "NEW crea la instancia y pasa estos parámetros a su constructor.
     DATA(notificacion) = NEW zcl_30_notificacion_c26(

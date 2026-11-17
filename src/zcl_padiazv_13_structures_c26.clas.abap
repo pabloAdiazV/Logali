@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_13_structures_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_13_STRUCTURES_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 

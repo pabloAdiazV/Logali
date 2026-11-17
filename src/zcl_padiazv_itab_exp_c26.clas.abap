@@ -29,7 +29,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_ITAB_EXP_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -882,5 +883,4 @@ CLASS zcl_padiazv_itab_exp_c26 IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

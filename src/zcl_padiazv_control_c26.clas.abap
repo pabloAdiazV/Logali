@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_control_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_CONTROL_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -178,8 +179,4 @@ CLASS zcl_padiazv_control_c26 IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
-
-
-
-
 ENDCLASS.

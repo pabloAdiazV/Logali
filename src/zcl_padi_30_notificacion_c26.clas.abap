@@ -14,7 +14,10 @@ CLASS zcl_padi_30_notificacion_c26 DEFINITION "AUXILIAR
     METHODS preparar RETURNING VALUE(resultado) TYPE string.
 ENDCLASS.
 
-CLASS zcl_padi_30_notificacion_c26 IMPLEMENTATION.
+
+
+CLASS ZCL_PADI_30_NOTIFICACION_C26 IMPLEMENTATION.
+
 
   METHOD constructor.
     "me-> identifica el atributo cuando el parámetro tiene el mismo nombre.
@@ -23,9 +26,9 @@ CLASS zcl_padi_30_notificacion_c26 IMPLEMENTATION.
     me->prioridad = prioridad.
   ENDMETHOD.
 
+
   METHOD preparar.
     "Construye el texto de la notificación; no ejecuta un envío externo.
     resultado = |Para: { destinatario } - { prioridad }: { mensaje }|.
   ENDMETHOD.
-
-  ENDCLASS.
+ENDCLASS.

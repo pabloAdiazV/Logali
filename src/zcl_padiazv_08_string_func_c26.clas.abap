@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_08_string_func_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_08_STRING_FUNC_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -218,5 +219,4 @@ CLASS zcl_padiazv_08_string_func_c26 IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_prueba_clase_c26 IMPLEMENTATION.
+CLASS ZCL_PRUEBA_CLASE_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
     out->write( 'Esta es mi primera clase en ABAP.' ).
@@ -34,5 +35,4 @@ CLASS zcl_prueba_clase_c26 IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

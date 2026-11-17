@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_02_ope_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_02_OPE_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
     "lv_car
@@ -128,5 +129,4 @@ CLASS zcl_padiazv_02_ope_c26 IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

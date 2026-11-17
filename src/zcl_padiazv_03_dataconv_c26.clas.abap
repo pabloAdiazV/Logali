@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
+CLASS ZCL_PADIAZV_03_DATACONV_C26 IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -161,5 +162,4 @@ CLASS zcl_padiazv_03_dataconv_c26 IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.
